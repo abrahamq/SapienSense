@@ -1,0 +1,24 @@
+{
+  "name": "sapiensense",
+  "version": "1.0.0",
+  "description": "Fancy jekyll powered single page site ======================",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abrahamq/SinglePaged.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abrahamq/SinglePaged/issues"
+  },
+  "homepage": "https://github.com/abrahamq/SinglePaged#readme",
+  "devDependencies": {
+    "browser-sync": "^2.24.5",
+    "gulp": "^3.9.1",
+    "gulp-shell": "^0.6.5"
+  }
+}
