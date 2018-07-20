@@ -7,7 +7,7 @@ fa-icon: cog
 
 #### Digital/ social creative strategy development and coaching
 
-#working with ad agencies to connect consumers to brands, particularly Millennial and Gen Z audiences.
+# working with ad agencies to connect consumers to brands, particularly Millennial and Gen Z audiences.
 
 
 - Successful research-based digital/ social creative strategy initiatives for:
