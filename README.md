@@ -1,3 +1,11 @@
+
+# To Deploy:
+  `terraform init`
+  `terraform apply`
+
+
+
+This site uses the SinglePaged template, see it's readme bellow: 
 Fancy jekyll powered single page site
 ======================
 

@@ -1,0 +1,27 @@
+dist: trusty
+language: ruby
+rvm:
+  - 2.5.0
+sudo: false
+cache: bundler
+
+branches:
+  only:
+    - gh-pages
+
+install:
+  - gem install jekyll bundler
+
+script:
+  - if [ "$TRAVIS_BRANCH" = "gh-pages" ]; then jekyll build; fi
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: sapiensenseconsulting
+    region: us-east-1
+    skip_cleanup: true
+    local_dir: _site
+    on:
+      branch: gh-pages
