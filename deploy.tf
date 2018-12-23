@@ -1,13 +1,43 @@
+variable "config" {
+  default = {
+    bucket = "sapiensenseconsulting"
+  }
+}
+
+locals {
+  bucket = "sapiensenseconsulting"
+  aliases = ["sapiensenseconsulting.com", "www.sapiensenseconsulting.com"]
+}
+
+locals {
+  # unique id for caching
+  s3_origin_id = "SapienSense"
+}
+
+locals {
+  route_53_zone_id = "Z2Z05YJ9PZXYMA"
+  route_53_domain_name = "sapiensenseconsulting.com"
+}
+
+locals {
+  acm_certificate_arn = "arn:aws:acm:us-east-1:756582436461:certificate/a0edf067-73c2-4f17-99f3-c9223951384a"
+}
+
+provider "aws" {
+  region = "us-east-1"
+}
+
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
-  comment = "Cloudfront access for SapienSense s3"
+  comment = "Cloudfront access for ${var.config["bucket"]} s3"
 }
 
 resource "aws_s3_bucket" "b" {
-  bucket = "sapiensenseconsulting"
+  bucket = "${local.bucket}"
+  region = "us-east-1"
   acl    = "private"
 
   tags {
-    Name = "SapienSense"
+    Name = "${local.bucket}"
   }
 
   policy = <<POLICY
@@ -21,15 +51,12 @@ resource "aws_s3_bucket" "b" {
 			"${aws_cloudfront_origin_access_identity.origin_access_identity.s3_canonical_user_id}"
                           },
               "Action": "s3:GetObject",
-              "Resource": "arn:aws:s3:::sapiensenseconsulting/*"
+              "Resource": "arn:aws:s3:::${local.bucket}/*"
           }
       ]
   }POLICY
 }
 
-locals {
-  s3_origin_id = "SapienSense"
-}
 
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
@@ -47,7 +74,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   comment             = "Some comment"
   default_root_object = "index.html"
 
-  aliases = ["sapiensenseconsulting.com", "www.sapiensenseconsulting.com"]
+  aliases = "${local.aliases}"
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
@@ -103,14 +130,14 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = "arn:aws:acm:us-east-1:756582436461:certificate/a0edf067-73c2-4f17-99f3-c9223951384a"
+    acm_certificate_arn = "${local.acm_certificate_arn}"
     ssl_support_method = "sni-only"
   }
 }
 
 resource "aws_route53_record" "www" {
-  zone_id = "Z2Z05YJ9PZXYMA"
-  name    = "sapiensenseconsulting.com"
+  zone_id = "${local.route_53_zone_id}"
+  name    = "${local.route_53_domain_name}"
   type    = "A"
 
   alias {
